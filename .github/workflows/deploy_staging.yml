@@ -1,0 +1,82 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+  distribute-android:
+    runs-on: ubuntu-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: NPM Install
+        run: |
+          echo "${{ secrets.ENV }}" > .env
+          grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+          npm install
+
+      # Build
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - name: Install firebase tool
+        run: |
+          yarn global add firebase-tools
+      - name: Bundle Cache
+        uses: actions/cache@v2
+        with:
+          path: android/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Setup fastlane
+        run: |
+          echo "${{ secrets.FASTLANE_ANDROID_ENV }}" > android/fastlane/.env
+          cd android && bundle install
+      - name: Distribute to firebase
+        run: cd android && bundle exec fastlane beta
+
+  distribute-ios:
+    runs-on: macOS-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Pods Cache
+        uses: actions/cache@v2
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: NPM Install
+        run: |
+          echo "${{ secrets.ENV }}" > .env
+          npm install
+
+      # Build
+      - name: Setup fastlane
+        run: |
+          echo "${{ secrets.FASTLANE_IOS_ENV }}" > ios/fastlane/.env
+      - name: Provisioning profile
+        run: cd ios && fastlane codesigning
+      - name: Distribute to firebase
+        run: cd ios && fastlane beta

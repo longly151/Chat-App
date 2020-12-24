@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Component should render without issues 1`] = `
+<ForwardRef(Themed.Button)
+  buttonStyle={
+    Object {
+      "backgroundColor": "#bdc6cf",
+      "borderColor": "#ffffff",
+      "borderRadius": 8,
+      "borderWidth": 0,
+      "height": 40,
+      "paddingHorizontal": 20,
+      "paddingVertical": 0,
+      "width": undefined,
+    }
+  }
+  containerStyle={
+    Object {
+      "borderRadius": 8,
+      "margin": 0,
+      "marginBottom": undefined,
+      "marginHorizontal": 0,
+      "marginLeft": undefined,
+      "marginRight": undefined,
+      "marginTop": undefined,
+      "marginVertical": 5,
+    }
+  }
+  iconContainerStyle={Object {}}
+  titleStyle={
+    Object {
+      "color": "#121212",
+      "fontFamily": "Roboto",
+      "fontSize": 16,
+      "fontWeight": "normal",
+      "marginLeft": 0,
+      "marginRight": 0,
+    }
+  }
+/>
+`;

@@ -1,0 +1,9 @@
+export { default as Home } from './Home.svg';
+export { default as HomeActive } from './HomeActive.svg';
+export { default as Theme } from './Theme.svg';
+export { default as Category } from './Category.svg';
+export { default as CategoryActive } from './CategoryActive.svg';
+export { default as Exclusive } from './Exclusive.svg';
+export { default as ExclusiveActive } from './ExclusiveActive.svg';
+export { default as More } from './More.svg';
+export { default as MoreActive } from './MoreActive.svg';

@@ -1,0 +1,17 @@
+/* 
+  InfoPlist.strings
+  VLRNBase
+
+  Created by Vilagon on 11/14/20.
+  
+*/
+
+"NSCameraUsageDescription" = "Truy cập Camera";
+
+"NSLocationAlwaysAndWhenInUseUsageDescription" = "Truy cập Vị trí";
+
+"NSLocationAlwaysUsageDescription" = "Truy cập Vị trí";
+
+"NSLocationWhenInUseUsageDescription" = "Truy cập Vị trí";
+
+"NSPhotoLibraryUsageDescription" = "Truy cập Thư viện";

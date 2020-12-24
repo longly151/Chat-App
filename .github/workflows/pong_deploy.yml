@@ -1,0 +1,99 @@
+name: Pong Deploy
+
+on:
+  repository_dispatch:
+
+jobs:
+  ping-pong:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Event Information
+        run: |
+          echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
+  distribute-android:
+    runs-on: ubuntu-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+        with:
+          repository: '${{ github.event.client_payload.repository }}'
+          token: '${{ secrets[github.event.client_payload.ping_access_token] }}'
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: NPM Install
+        run: |
+          echo "${{ secrets[github.event.client_payload.env] }}" > .env
+          grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+          npm install
+
+      # Set ENV
+      # - name: Set ENV
+      #   run: |
+      #     echo "::set-env name=AWS_ACCESS_KEY_ID_SECRET_NAME::AWS_ACCESS_KEY_ID_${GITHUB_REF_SLUG}"
+      #     echo "::set-env name=AWS_SECRET_ACCESS_KEY_SECRET_NAME::AWS_SECRET_ACCESS_KEY_${GITHUB_REF_SLUG}"
+
+      # Build
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - name: Install firebase tool
+        run: |
+          yarn global add firebase-tools
+      - name: Bundle Cache
+        uses: actions/cache@v2
+        with:
+          path: android/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Setup fastlane
+        run: |
+          echo "${{ secrets[github.event.client_payload.fastlane_android_env] }}" > android/fastlane/.env
+          cd android && bundle install
+      - name: Distribute to firebase
+        run: cd android && bundle exec fastlane beta
+
+  distribute-ios:
+    runs-on: macOS-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+        with:
+          repository: '${{ github.event.client_payload.repository }}'
+          token: '${{ secrets[github.event.client_payload.ping_access_token] }}'
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Pods Cache
+        uses: actions/cache@v2
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: NPM Install
+        run: |
+          echo "${{ secrets[github.event.client_payload.env] }}" > .env
+          npm install
+
+      # Build
+      - name: Setup fastlane
+        run: |
+          echo "${{ secrets[github.event.client_payload.fastlane_ios_env] }}" > ios/fastlane/.env
+      - name: Provisioning profile
+        run: cd ios && fastlane codesigning
+      - name: Distribute to firebase
+        run: cd ios && fastlane beta

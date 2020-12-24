@@ -1,0 +1,120 @@
+{
+  "common": {
+    "key": "vi",
+    "theme": "Chủ đề",
+    "language": "Ngôn ngữ",
+    "cancel": "Huỷ bỏ",
+    "ok": "Đồng ý",
+    "done": "Hoàn tất",
+    "no_internet": "Không có kết nối Internet"
+  },
+  "component": {
+    "file_view_button": {
+      "updated_at": "Cập nhật ngày {{updatedAt}}"
+    },
+    "date_time_picker": {
+      "date": "ngày",
+      "time": "giờ",
+      "datetime": "ngày và giờ",
+      "pick": "Chọn {{mode}}"
+    },
+    "flat_list": {
+      "empty": "Danh sách rỗng"
+    },
+    "editable_image": {
+      "take_photo": "Chụp ảnh",
+      "select_from_album": "Chọn từ Album"
+    },
+    "input": {
+      "default_label": "thông tin",
+      "input": "Nhập {{field}}",
+      "invalid": "{{field}} không hợp lệ"
+    },
+    "loading": {
+      "loading": "Vui lòng đợi"
+    },
+    "map": {
+      "pick_location": "Chọn vị trí"
+    }
+  },
+  "permission_denied": {
+    "go_to_setting": "Đi tới cài đặt",
+    "camera": "Để truy cập tính năng này, bạn cần cho phép \"{{appName}}\" sử dụng camera của bạn",
+    "photo_library": "Để truy cập tính năng này, bạn cần cho phép \"{{appName}}\" truy cập vào thư viện của bạn",
+    "location": "Để có thể sử dụng toàn bộ tính năng của bản đồ, bạn cần cho phép \"{{appName}}\" truy cập vào vị trí hiện tại của bạn"
+  },
+  "exception": {
+    "400": "Thông tin không hợp lệ. Vui Lòng kiểm tra lại",
+    "401": "Số điện thoại hoặc mật khẩu không chính xác",
+    "403": "Tài khoản hiện tại không có quyền truy cập vào trang này",
+    "404": "Nội dung hiện không có sẵn. Vui lòng thử lại sau",
+    "500": "Đã có lỗi xảy ra. Vui lòng thử lại sau",
+    "502": "Máy chủ đang được bảo trì. Vui lòng thử lại sau"
+  },
+  "bottom_tab": {
+    "home": "Trang chủ",
+    "favorite": "Yêu thích",
+    "trip": "Chuyến đi",
+    "notification": "Thông báo",
+    "profile": "Tài khoản"
+  },
+  "header": {
+    "setting": "Cài đặt",
+    "example": "Danh sách các component"
+  },
+  "auth": {
+    "login": "Đăng nhập",
+    "login_mobile": "Đăng nhập với SĐT",
+    "input_email_address": "Nhập Email *",
+    "input_password": "Mật khẩu *",
+    "input_first_name": "Tên *",
+    "input_last_name": "Họ *",
+    "input_user": "Tên người dùng *",
+    "input_email": "Email *",
+    "forgot": "Quên mật khẩu?",
+    "register": "Đăng ký",
+    "logout": "Đăng xuất",
+    "or": "hoặc",
+    "facebook": "Đăng nhập với Facebook",
+    "google": "Đăng nhập với Google",
+    "have_account": "Bạn chưa có tài khoản?",
+    "already_account": "Đã có tài khoản?",
+    "description_forgot": "Nhập Email. Chúng tôi sẽ gửi hướng dẫn khôi phục mật khẩu qua Email của bạn",
+    "button_login_mobile": "Nhận mã",
+    "title_verify": "Xác thực tài khoản của bạn",
+    "get_back_verify": "Gửi lại mã OTP?",
+    "send_verify": "Gửi",
+    "button_verify": "Xác nhận ngay bây giờ",
+    "fill_verify_otp": "Vui lòng xác nhận OTP",
+    "success_verify_otp": "Đã xác nhận",
+    "resend_otp": "Gửi lại mã OTP"
+  },
+  "home": {
+    "greet": "Chào, ",
+    "expected_find": "Bạn muốn đi đến đâu?",
+    "btn_find": "Bạn dự định đến nơi nào?",
+    "crucial_category_title": "Thức tỉnh và phát triển kiến thức của bạn",
+    "crucial_category_subTitle": "Lập các kế hoạch khác nhau để khám phá những thứ quý giá trong cuộc sống của bạn",
+    "crucial_category_btn_explore": "Bắt đầu nào",
+    "hot_deal_title": "Những đơn nổi bật",
+    "hot_deal_explore": "Tìm hiểu tất cả"
+  },
+  "validator": {
+    "email": "E-Mail không đúng định dạng!",
+    "password": "Mật khẩu phải chứa từ 6 - 20 ký tự!",
+    "first_name": "Tên không được chứa ký tự đặc biệt!",
+    "last_name": "Họ không được chứa ký tự đặc biệt!",
+    "username": "Username chỉ được chứa chữ & số từ 8 đên 20 ký tự!",
+    "password_old": "Vui lòng nhập mật khẩu cũ",
+    "password_confirm": "Mật khẩu không khớp!",
+    "phone": "Số điện thoại không hợp lệ!",
+    "user_email": "Vui lòng nhập email hoặc username",
+    "name": "Vui lòng nhập tên!",
+    "message": "Vui lòng nhập tin nhắn!",
+    "title": "Vui lòng nhập tiêu đề!",
+    "content": "Vui lòng nhập nội dung!"
+  },
+  "map": {
+    "search_area": "Tìm kiếm khu vực này"
+  }
+}

@@ -1,0 +1,112 @@
+name: Testing
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  install-and-js-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install npm dependencies
+        run: |
+          echo "${{ secrets.ENV }}" > .env
+          grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+          npm install
+      - name: Lint Test
+        run: |
+          npm run lint
+      - name: JS Test
+        run: |
+          npm run test
+
+  android-test:
+    needs: install-and-js-test
+    runs-on: ubuntu-latest
+    steps:
+      # Node
+      - uses: actions/checkout@v2
+      - name: NPM Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.npm
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: NPM Install
+        run: |
+          echo "${{ secrets.ENV }}" > .env
+          grep -v '    "postinstall": "cd ios && pod install && cd .."' package.json > temp-package.json; mv temp-package.json package.json
+          npm install
+
+      # Build
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - name: Bundle Cache
+        uses: actions/cache@v2
+        with:
+          path: android/vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      # - name: Android Test
+      #   run: |
+      #     cd android && ./gradlew assembleRelease
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: app-release.apk
+      #     path: android/app/build/outputs/apk/release/
+      - name: Setup fastlane
+        run: cd android && bundle install
+      - name: Android Test
+        run: |
+          cd android && fastlane test
+
+  # ios-test:
+  #   runs-on: macOS-latest
+  #   steps:
+  #     # Node
+  #     - uses: actions/checkout@v2
+  #     - name: NPM Cache
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: |
+  #           ~/.npm
+  #           **/node_modules
+  #         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-node-
+  #     - name: NPM Install
+  #       run: |
+  #         echo "${{ secrets.ENV }}" > .env
+  #         npm install
+
+  #     # Build
+  #     - name: Pods Cache
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ios/Pods
+  #         key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-pods-
+  #     - name: Provisioning profile
+  #       run: cd ios && fastlane codesigning team_id:${{ secrets.APPLE_TEAM_ID }} keychain_password:${{ secrets. APPLE_KEYCHAIN_PASSWORD }}  certificate_password:${{ secrets. APPLE_CERTIFICATE_PASSWORD }}
+  #     - name: Setup fastlane
+  #       run: cd ios && bundle install
+  #     - name: iOS Test
+  #       run: |
+  #         cd ios && bundle exec fastlane test

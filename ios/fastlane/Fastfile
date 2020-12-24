@@ -1,0 +1,84 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Code Signing"
+  lane :codesigning do
+    create_keychain(
+      name: "FastlaneKeychain",
+      default_keychain: true,
+      unlock: true,
+      timeout: 3600,
+      lock_when_sleeps: true,
+      password: ENV["KEYCHAIN_PASSWORD"]
+    )
+    install_provisioning_profile(path: ENV["PROVISIONING_PATH"])
+
+    import_certificate(
+      keychain_name: "FastlaneKeychain",
+      keychain_password: ENV["KEYCHAIN_PASSWORD"],
+      certificate_path: ENV["CERTIFICATE_PATH"],
+      certificate_password: ENV["CERTIFICATE_PASSWORD"]
+    )
+
+    update_project_team(
+      path: ENV["SCHEME_PATH"],
+      teamid: ENV["TEAM_ID"]
+    )
+  end
+
+
+  desc "iOS Build"
+  lane :build do
+    update_project_provisioning(
+      profile: ENV["PROVISIONING_PATH"],
+    )
+    build_app(
+      scheme: ENV["SCHEME"],
+      workspace: ENV["WORKSPACE"],
+      export_method: "development",
+    )
+  end
+
+
+  desc "iOS Testing"
+  lane :test do
+    run_tests(workspace: ENV["WORKSPACE"],
+              devices: ["iPhone 8", "iPad Air"],
+              scheme: ENV["SCHEME"])
+  end
+
+
+  # desc "Push a new beta build to TestFlight"
+  # lane :beta do
+  #   increment_build_number(xcodeproj: "CityAReal.xcodeproj")
+  #   build_app(workspace: "CityAReal.xcworkspace", scheme: "CityAReal")
+  #   upload_to_testflight
+  # end
+
+  desc "Push a new beta build to Firebase App Distribution"
+  lane :beta do
+    build
+    firebase_app_distribution(
+      app: ENV["FIREBASE_IOS_APP"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      release_notes: "Lots of amazing new features to test out!",
+      groups: ENV["FIREBASE_IOS_GROUPS"]
+    )
+  end
+
+end

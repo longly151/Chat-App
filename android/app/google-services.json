@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1007114215374",
+    "firebase_url": "https://vlrnbase.firebaseio.com",
+    "project_id": "vlrnbase",
+    "storage_bucket": "vlrnbase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007114215374:android:9f37f26caec06dd229d59f",
+        "android_client_info": {
+          "package_name": "com.demo.vlrnbase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007114215374-n93e8n612ffpucr19n0hs3m2ag32ve07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLnsw_0g1QbZzgT_X_YmFkTk6VLpeGXfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007114215374-n93e8n612ffpucr19n0hs3m2ag32ve07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007114215374-kj3spg2epmgoe3q88b8hr061f9c0sli6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.demo.vlrnbase"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
